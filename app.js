@@ -1,5 +1,5 @@
-import { calculate,defaults } from './calc.js';
-import { drawSection } from './section.js';
+import { calculate,defaults } from './calc.js?v=hindley-relief-2';
+import { drawSection } from './section.js?v=hindley-relief-2';
 const $=id=>document.getElementById(id);
 const configs=[
   ['reliefFields','reliefRun','한쪽 전이 길이 (mm)',.01,100,.01],['reliefFields','reliefDepth','단부 반경 제거량 (mm)',.001,20,.001],
@@ -81,4 +81,4 @@ function playback(){$('play').textContent=playing?'일시정지':'재생';view?.
 $('play').onclick=()=>{playing=!playing;playback()};$('playSpeed').onchange=()=>view?.speed(Number($('playSpeed').value));
 new ResizeObserver(()=>{if(section&&g&&!g.blank.errors.length)drawSection($('drawing'),s,g)}).observe($('stage'));
 window.addEventListener('hashchange',route);route();playback();
-try{const {makeViewer}=await import('./viewer.js');view=makeViewer($('scene'));render();playback()}catch(error){console.warn('3D 초기화',error);unavailable=true;$('iso').disabled=true;setMode(true)}
+try{const {makeViewer}=await import('./viewer.js?v=hindley-relief-2');view=makeViewer($('scene'));render();playback()}catch(error){console.warn('3D 초기화',error);unavailable=true;$('iso').disabled=true;setMode(true)}

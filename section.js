@@ -1,4 +1,4 @@
-import {wormLimits,wormRadius} from './shape.js';
+import {wormLimits,wormRadius} from './shape.js?v=hindley-relief-2';
 export function drawSection(canvas,s,g,highlight=true) {
   const ctx=canvas.getContext('2d'),w=canvas.clientWidth,h=canvas.clientHeight;
   if(!ctx||!w||!h)return;

@@ -1,4 +1,4 @@
-import {blankDimensions} from './shape.js';
+import {blankDimensions} from './shape.js?v=hindley-relief-2';
 export const defaults = Object.freeze({
   reliefRun:3, reliefDepth:.15, wormAngle:37.5, shank:12, journal:10, bore:12, gearFlat:.7, gearBevel:.8, gearAngle:32.5, backlash:0,
   center:50, teeth:30, starts:1, pressure:20, rpm:1000,

@@ -3,7 +3,7 @@ import { OrbitControls } from './vendor/orbit.js';
 import { RoomEnvironment } from './vendor/room.js';
 
 const tau=2*Math.PI;
-import {wormRadius,wheelProfile} from './shape.js';
+import {wormRadius,wheelProfile} from './shape.js?v=hindley-relief-2';
 function surface(parent,mat,rows,cols,point){
   const vertices=[],indices=[];
   for(let j=0;j<=rows;j++) for(let i=0;i<=cols;i++) vertices.push(...point(i/cols,j/rows));
