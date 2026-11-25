@@ -43,7 +43,7 @@ export function makeViewer(canvas){
   const controls=new OrbitControls(cam,canvas);controls.enablePan=false;controls.minDistance=1.5;controls.maxDistance=8;
   const steel=material(0xc6ccd2,.24),edge=material(0x949fa7,.21),gold=material(0xdca357,.30), brass=material(0xbd853c,.34);
   let pivot,worm,wheel,geometryKey='',last=0,angle=0,params,ratio=30,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches,speed=.03,visible=true;
-  function home(){controls.target.set(0,.17,0);cam.position.set(1.18,1.24,2.9);controls.update()}
+  function home(){controls.target.set(0,.22,0);cam.position.set(1.55,1.67,3.95);controls.update()}
   function set(s,g){
     params=s;ratio=g.u; const key=[s.center,s.teeth,s.starts,s.pressure].join('/');
     if(key!==geometryKey){
@@ -61,6 +61,13 @@ export function makeViewer(canvas){
       });
       const journal=g.df1*.35/a, ext=R*.48;
       for(const sign of [-1,1]){
+        surface(worm,steel,1,Math.max(96,s.starts*24),(tr,blend)=>{
+          const x=sign*half,t=tr*tau;
+          const phase=s.teeth*Math.asin(clamp(x/R,-.99,.99))/tau-s.starts*(t-Math.PI)/tau;
+          const outer=(body(x)-g.ded+g.depth*tooth(phase))/a;
+          const rad=outer+(journal-outer)*blend;
+          return [x/a,rad*Math.cos(t),rad*Math.sin(t)];
+        });
         cylinder(worm,edge,journal,(ext+half*.15)/a,'x',sign*(half+ext*.46)/a);
         cylinder(worm,steel,journal*1.24,half*.13/a,'x',sign*half*.97/a);
       }
