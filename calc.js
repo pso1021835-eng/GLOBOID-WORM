@@ -1,4 +1,6 @@
+import {blankDimensions} from './shape.js';
 export const defaults = Object.freeze({
+  reliefRun:3, reliefDepth:.15, wormAngle:37.5, shank:12, journal:10, bore:12, gearFlat:.7, gearBevel:.8, gearAngle:32.5, backlash:0,
   center:50, teeth:30, starts:1, pressure:20, rpm:1000,
   efficiency:75, service:1, tilt:0, arm:35, pivot:'parallel', material:'std'
 });
@@ -42,8 +44,10 @@ export function calculate(s) {
   if(s.material!=='std') issues.push('표준 재료 조합에 대한 계수 필요');
   if(df1<rootMin) issues.push('웜 골지름이 권장 최솟값 미달');
   if(s.rpm<=100) issues.push('100 rpm 이하 저속 운전 별도 검토');
+  const blank=blankDimensions(s,{dw1,dw2,da1,df1,length,width,depth,add,ded,ma,base});
+  issues.push(...blank.errors);
   const factors=[interpolate(s.center,references.pressure),interpolate(u,references.ratio),interpolate(s.center,references.material),interpolate(speed,references.speed)];
   const power=issues.length?null:.746*outRpm*factors.reduce((a,b)=>a*b,1);
   const torque=power===null?null:9550*power*(s.efficiency/100)/(outRpm*s.service);
-  return {u,dw1,dw2,ma,mn,lead:lead/rad,alphaX:alphaX/rad,da1,df1,rootMin,width,length,depth,add,ded,speed,outRpm,actualCenter,shaftAngle,factors,power,torque,issues};
+  return {blank,base,u,dw1,dw2,ma,mn,lead:lead/rad,alphaX:alphaX/rad,da1,df1,rootMin,width,length,depth,add,ded,speed,outRpm,actualCenter,shaftAngle,factors,power,torque,issues};
 }
