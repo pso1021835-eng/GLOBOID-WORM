@@ -17,7 +17,7 @@ export function blankDimensions(s,g){
   if(cutR<=s.shank/2 || cutR<=s.center-Math.sqrt(rootArc**2-arcEnd**2)) errors.push('단부 제거량이 가용 이높이를 초과합니다.');
   const bevelEnd=flatEnd+(cutR-s.shank/2)*Math.tan(s.wormAngle*DEG);
   const gearOD=2*(R+g.add+sag(rg2,gearArcEnd));
-  if(gearOD/2-s.gearBevel/Math.tan(s.gearAngle*DEG)<=R-g.ded+sag(rf2,wheelHalf)) errors.push('휠 단부 면취가 이뿌리에 도달합니다.');
+  if(gearOD/2-s.gearBevel/Math.tan(s.gearAngle*DEG)<=s.bore/2) errors.push('휠 단부 면취가 보어에 도달합니다.');
   const beta=Math.asin(g.base/g.dw2), pitchAngle=TAU/s.teeth;
   return {pitch,clear,rg1,rf2,rg2,bf1,half,arcEnd,flatEnd,bevelEnd,blankR,cutR,rootArc,wheelHalf,gearArcEnd,gearOD,errors,
     pitchAngle,beta,halfTooth:(.45*pitch-s.backlash)/(2*R),totalHalf:bevelEnd+s.journal};
@@ -37,7 +37,8 @@ export function wheelLimits(z,s,g){
   const floor=R-g.ded+sag(b.rf2,t);
   let tip=R+g.add+sag(b.rg2,Math.min(t,b.gearArcEnd));
   if(t>b.wheelHalf-s.gearBevel)tip-=(t-b.wheelHalf+s.gearBevel)/Math.tan(s.gearAngle*DEG);
-  return [floor,tip];
+  // A face chamfer can truncate an entire tooth on fine-pitch wheels.
+  return [Math.min(floor,tip),tip];
 }
 // Rotating a pair of straight generators tangent to the common base circle:
 // their angular intersections at radius rho differ by asin(rb/rho).
